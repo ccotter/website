@@ -1,0 +1,47 @@
+<?php 
+
+$currentPage = "coding.html";
+
+include("include/header.html"); ?>
+
+<div class="row-fluid">
+  <h3>Coding Projects</h3>
+  <div class="row-fluid">
+    <div class="span6 well">
+      <h4>Deterministic Linux</h4>
+      <p>
+The largest and most challenging project I have worked on was
+making Linux deterministic. Inspired by the design of another deterministic
+operation system described by Aviram et al.'s in
+<a href="http://dedis.cs.yale.edu/2010/det/papers/osdi10.pdf">
+  Efficient System-Enforced Deterministic Parallelism</a> paper, I modified
+the Linux kernel to support deterministic execution of user programs. I
+extended the kernel syscall API adding three new syscalls for deterministic
+processes. I wrote a replacement for the standard C library that wraps around
+the new syscall interface to provide familiar functionality to application
+programmers.
+      </p>
+      <p>
+Read my undergraduate thesis, <a href="ccotter-thesis.pdf">
+  Enforced Deterministic Program Execution in the Linux Kernel</a> and check
+out the source code for the
+<a href="http://github.com/ccotter/linux-deterministic">modified kernel</a>
+(see the v3.0-det branch) and <a href="http://github.com/ccotter/libdeterm">
+user library</a> on Github.
+      </p>
+    </div>
+    <div class="span6 well">
+      <h4>OpenCoweb</h4>
+      <p>
+<a href="http://opencoweb.org">OpenCoweb</a> is an application framework that
+connects remote clients to a cooperative session on the Web. Application
+programmers use JavaScript to write to send cooperative events to remote clients and the
+framework 
+
+
+      </p>
+    </div>
+  </div>
+</div>
+
+<?php include("include/footer.html"); ?>

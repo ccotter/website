@@ -1,0 +1,75 @@
+<?php
+
+$titles["index.html"] = "Homepage: Chris Cotter";
+$titles["coding.html"] = "Chris Cotter's Coding Projects";
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><?php print($titles[$currentPage]); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <!-- Include this to make Bootstrap responsive -->
+    <!--<link rel="stylesheet" href="css/bootstrap-responsive.css">-->
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Javascripts -->
+    <script type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+    </script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/less-1.3.0.min.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse"
+            data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Chris Cotter</a>
+          <div class="nav-collapse collapse pull-right">
+            <ul class="nav">
+<?php
+$menuItems = array();
+$menuItems[] = array("title" => "Home", "link" => "index.html");
+$menuItems[] = array("title" => "Personal", "link" => "personal.html");
+$menuItems[] = array("title" => "Coding", "link" => "coding.html");
+$menuItems[] = array("title" => "Academics", "link" => "academics.html");
+$menuItems[] = array("title" => "Contact", "link" => "contact.html");
+foreach ($menuItems as $value) {
+  $active = "";
+  if ($currentPage == $value["link"])
+    $active = ' class="active"';
+  printf('<li%s><a href="%s">%s</a></li>',
+    $active, $value["link"], $value["title"]);
+}
+?>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="container">
