@@ -3,6 +3,9 @@
 $titles["index.html"] = "Homepage: Chris Cotter";
 $titles["coding.html"] = "Chris Cotter's Coding Projects";
 
+if (!isset($dataSpyBody))
+  $dataSpyBody = '';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +19,7 @@ $titles["coding.html"] = "Chris Cotter's Coding Projects";
 
     <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -38,7 +42,8 @@ $titles["coding.html"] = "Chris Cotter's Coding Projects";
     <script src="js/html5shiv.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body<?php print($dataSpyBody); ?>>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -48,15 +53,15 @@ $titles["coding.html"] = "Chris Cotter's Coding Projects";
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Chris Cotter</a>
+          <a class="brand" href="index.html">Chris Cotter</a>
           <div class="nav-collapse collapse pull-right">
             <ul class="nav">
 <?php
 $menuItems = array();
 $menuItems[] = array("title" => "Home", "link" => "index.html");
-$menuItems[] = array("title" => "Personal", "link" => "personal.html");
+//$menuItems[] = array("title" => "Personal", "link" => "personal.html");
 $menuItems[] = array("title" => "Coding", "link" => "coding.html");
-$menuItems[] = array("title" => "Academics", "link" => "academics.html");
+//$menuItems[] = array("title" => "Academics", "link" => "academics.html");
 $menuItems[] = array("title" => "Contact", "link" => "contact.html");
 foreach ($menuItems as $value) {
   $active = "";
@@ -72,4 +77,4 @@ foreach ($menuItems as $value) {
       </div>
     </div>
 
-  <div class="container">
+  <div class="container wrapper">

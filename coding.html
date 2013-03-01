@@ -2,46 +2,133 @@
 
 $currentPage = "coding.html";
 
+$dataSpyBody = ' data-spy="scroll" data-target=".ccnavbar"';
+
 include("include/header.html"); ?>
 
+<script type="text/javascript">
+/* Don't know if this is the *right* way to do this, but: the right menu
+   has a fixed position until we scroll down past a certain point. */
+$(window).scroll(function() {
+  if ($(window).scrollTop() < 0) {
+    $("ul.affix").css("top", $("#firstCodeProject").position().top);
+    return;
+  }
+  var diff = $("#firstCodeProject").position().top - $(window).scrollTop();
+  if (diff < 55) {
+    $("ul.affix").css("top", 55);
+  } else {
+    $("ul.affix").css("top", diff);
+  }
+});
+</script>
+
+<h3>Coding Projects</h3>
 <div class="row-fluid">
-  <h3>Coding Projects</h3>
-  <div class="row-fluid">
-    <div class="span6 well">
+
+  <!-- Content -->
+  <div class="span8">
+      <span id="detlinux"></span>
+    <div class="well" id="firstCodeProject">
+      <!--<span id="detlinux" style="position:absolute;margin-top:-45px;"></span>-->
       <h4>Deterministic Linux</h4>
-      <p>
-The largest and most challenging project I have worked on was
-making Linux deterministic. Inspired by the design of another deterministic
-operation system described by Aviram et al.'s in
+<h5>Undergraduate thesis</h5>
+<p>
+To fulfill my undergraduate thesis degree requirement (and because it was fun),
+I worked on the Linux kernel to make Linux deterministic. I began work on this
+project under the direction of my advisor,
+<a href="http://www.cs.utexas.edu/~mwalfish/">Mike Walfish</a>, in August 2011.
+My work was inspired by Determinator, a deterministic operating system described
+in Aviram et al.'s
 <a href="http://dedis.cs.yale.edu/2010/det/papers/osdi10.pdf">
-  Efficient System-Enforced Deterministic Parallelism</a> paper, I modified
-the Linux kernel to support deterministic execution of user programs. I
+  Efficient System-Enforced Deterministic Parallelism</a> paper.
+
+<h5>What I did</h5>
+<p>
+I modified the
+Linux kernel to support deterministic execution of user programs. I
 extended the kernel syscall API adding three new syscalls for deterministic
 processes. I wrote a replacement for the standard C library that wraps around
 the new syscall interface to provide familiar functionality to application
 programmers.
-      </p>
-      <p>
-Read my undergraduate thesis, <a href="ccotter-thesis.pdf">
-  Enforced Deterministic Program Execution in the Linux Kernel</a> and check
-out the source code for the
-<a href="http://github.com/ccotter/linux-deterministic">modified kernel</a>
-(see the v3.0-det branch) and <a href="http://github.com/ccotter/libdeterm">
-user library</a> on Github.
-      </p>
-    </div>
-    <div class="span6 well">
-      <h4>OpenCoweb</h4>
-      <p>
+</p>
+
+<h5>Further reading</h5>
+<ul class="unstyled">
+  <li><a href="ccotter-thesis.pdf">
+    Enforced Deterministic Program Execution in the Linux Kernel</a></li>
+  <li><a href="http://github.com/ccotter/linux-deterministic">
+    Deterministic Linux Kernel Source</a> (see v3.0-det branch)</li>
+  <li><a href="http://github.com/ccotter/libdeterm">libdeterm C library</a></li>
+</div>
+  <span id="ocw"></span>
+<div class="well">
+  <h4>OpenCoweb</h4>
+      <h5>Background</h5>
+<p>
 <a href="http://opencoweb.org">OpenCoweb</a> is an application framework that
-connects remote clients to a cooperative session on the Web. Application
-programmers use JavaScript to write to send cooperative events to remote clients and the
-framework 
-
-
-      </p>
+allows developers to create collaborative web applications. The framework
+handles sending user events to remote clients. Conflicting events are
+automatically resolved using an operational transformation algorithm
+</p>
+<p>
+The framework connects clients with cometd, Bayeux, and WebSockets technologies.
+There are two different servers, one written in Java based on the cometd-java
+project, and another in Python running the Tornado web server.
+The server ferries messages between clients. The framework provides a
+JavaScript API for sending and receiving remote events. The operational
+transform engine runs in the client's brower to reconcile conflicting
+changes.
+</p>
+<h5>Operational transform</h5>
+<p>
+The key to the OpenCoweb framekwork is the
+<a href="http://en.wikipedia.org/wiki/Operational_transformation">
+  operational transform</a> (OT) engine OT emerged in the 1980s as a way for
+remote clients to communicate and maintain a synchronized document without a
+central server. In the centralized server model, each clients communicates with
+the server directly, and the server handles conflict resolution. To remove the
+requirement of a central server, OT supports true peer-to-peer communication
+while guaranteeing a synchronized application state, even in the face of
+conflicting application updates. The OT engine runs on all client's machines
+and takes as input remote operations and, after a series of transformations,
+sends the transformed events to the local instance. The engine resolves
+conflicts in a deterministic fashion and ensures that all clients see the same
+application state.
+</p>
+<h5>My contribution</h5>
+<p>
+OpenCoweb was the first project I worked on at IBM. I started working on the
+code in May 2012 when the operation engine and Java server were mature, stable
+pieces of code. My job was to maintain the code, fix bugs, write documentation
+and contribute to the developer community (i.e., answer
+questions). One of the major efforts I worked on was to bring the outdated
+Python server code up to date so that the Java and Python servers both had the
+same features. Since the 1.0 release milestone, I have played a significantly
+reduced role as I have taken on other projects at IBM.
+</p>
+      <h5>Links</h5>
+<ul class="unstyled">
+  <li><a href="http://demos.opencoweb.org">OpenCoweb application demos</a></li>
+  <li><a href="http://github.com/opencoweb/coweb">Git repository</a></li>
+  <li><a href="http://github.com/opencoweb/cowebx">Demos repository</a></li>
+  <li><a href="http://github.com/opencoweb/coweb-jsoe">JavaScript standalone
+    operational transform engine API</a></li>
+  <li><a href="http://opencoweb.org/index.php?option=com_weblinks&view=category&id=13&Itemid=20">
+    More links on operational transform</a></li>
+</ul>
     </div>
   </div>
+
+
+  <!-- Sidebar nav -->
+<div class="span4 ccnavbar">
+  <ul class="nav nav-list bs-docs-sidenav affix">
+    <li><a href="#detlinux">Deterministic Linux</a></li>
+    <li><a href="#ocw">OpenCoweb</a></li>
+  </ul>
+</div>
+
 </div>
 
 <?php include("include/footer.html"); ?>
