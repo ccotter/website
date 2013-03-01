@@ -10,28 +10,35 @@ include("include/header.html"); ?>
 /* Don't know if this is the *right* way to do this, but: the right menu
    has a fixed position until we scroll down past a certain point. */
 $(window).scroll(function() {
-  if ($(window).scrollTop() < 0) {
-    $("ul.affix").css("top", $("#firstCodeProject").position().top);
+  var min = 0;
+  var scrollTop = $(window).scrollTop();
+  if (scrollTop < 0) {
+    $("ul.affix").css("top", $("#detlinux").position().top);
     return;
   }
-  var diff = $("#firstCodeProject").position().top - $(window).scrollTop();
-  if (diff < 55) {
-    $("ul.affix").css("top", 55);
+  var diff = $("#detlinux").position().top - scrollTop;
+  if (diff < min) {
+    $("ul.affix").css("top", min);
   } else {
     $("ul.affix").css("top", diff);
   }
-});
+  });
+$(document).ready(function(){
+    $(window).scroll();
+    });
 </script>
 
-<h3>Coding Projects</h3>
+<h3 style="margin-bottom: -35px;">Coding Projects</h3>
 <div class="row-fluid">
 
   <!-- Content -->
   <div class="span8">
-      <span id="detlinux"></span>
-    <div class="well" id="firstCodeProject">
-      <!--<span id="detlinux" style="position:absolute;margin-top:-45px;"></span>-->
-      <h4>Deterministic Linux</h4>
+
+    <!-- Begin detlinux section -->
+    <div class="well-container" id="detlinux">
+      <div class="well">
+        <h4>Deterministic Linux</h4>
+
 <h5>Undergraduate thesis</h5>
 <p>
 To fulfill my undergraduate thesis degree requirement (and because it was fun),
@@ -45,26 +52,37 @@ in Aviram et al.'s
 
 <h5>What I did</h5>
 <p>
-I modified the
-Linux kernel to support deterministic execution of user programs. I
-extended the kernel syscall API adding three new syscalls for deterministic
-processes. I wrote a replacement for the standard C library that wraps around
-the new syscall interface to provide familiar functionality to application
-programmers.
+I modified the x86-64 Linux kernel v3.0 to enforce deterministic execution
+of user programs. I primarily worked in the memory management and process
+organization (forking, signal handling, low-level synchronization) subsystems.
+Deterministic programs are disallowed from using most legacy syscalls (e.g.,
+<span class="monospace">write()</span> and
+<span class="monospace">open()</span>), so I wrote a replacement for the
+standard C library to use the new deterministic syscall API.
 </p>
 
 <h5>Further reading</h5>
 <ul class="unstyled">
   <li><a href="ccotter-thesis.pdf">
-    Enforced Deterministic Program Execution in the Linux Kernel</a></li>
+    Enforced Deterministic Program Execution in the Linux Kernel</a>
+  - my thesis</li>
+  <li><a href="https://github.com/ccotter/thesis">Thesis latex source</a>
+  - git</li>
   <li><a href="http://github.com/ccotter/linux-deterministic">
-    Deterministic Linux Kernel Source</a> (see v3.0-det branch)</li>
-  <li><a href="http://github.com/ccotter/libdeterm">libdeterm C library</a></li>
-</div>
-  <span id="ocw"></span>
-<div class="well">
-  <h4>OpenCoweb</h4>
-      <h5>Background</h5>
+    Deterministic Linux Kernel Source</a> see the v3.0-det branch</li>
+  <li><a href="http://github.com/ccotter/libdeterm">
+    libdeterm C library</a> - git</li>
+</ul>
+
+      </div>
+    </div>
+    <!-- end detlinux -->
+    <!-- begin ocw section -->
+    <div class="well-container" id="ocw">
+      <div class="well">
+        <h4>OpenCoweb</h4>
+        <h5>Background</h5>
+
 <p>
 <a href="http://opencoweb.org">OpenCoweb</a> is an application framework that
 allows developers to create collaborative web applications. The framework
@@ -107,27 +125,137 @@ Python server code up to date so that the Java and Python servers both had the
 same features. Since the 1.0 release milestone, I have played a significantly
 reduced role as I have taken on other projects at IBM.
 </p>
-      <h5>Links</h5>
+<h5>Further reading</h5>
 <ul class="unstyled">
   <li><a href="http://demos.opencoweb.org">OpenCoweb application demos</a></li>
-  <li><a href="http://github.com/opencoweb/coweb">Git repository</a></li>
+  <li><a href="http://github.com/opencoweb/coweb">Coweb core repository</a></li>
   <li><a href="http://github.com/opencoweb/cowebx">Demos repository</a></li>
   <li><a href="http://github.com/opencoweb/coweb-jsoe">JavaScript standalone
     operational transform engine API</a></li>
   <li><a href="http://opencoweb.org/index.php?option=com_weblinks&view=category&id=13&Itemid=20">
-    More links on operational transform</a></li>
+    Articles on operational transform</a></li>
 </ul>
-    </div>
-  </div>
 
+      </div>
+    </div>
+    <!-- end ocw section -->
+
+    <!-- begin jos section -->
+    <div class="well-container" id="jos">
+      <div class="well">
+        <h4>JOS Operating System</h4>
+        <h5>Background</h5>
+<p>
+For my undergraduate operating systems course, our course project consisted
+of seven
+<a href="http://www.cs.utexas.edu/~mwalfish/classes/s11-cs372h/labs.html">
+  labs</a>. The labs were centered around
+<a href="http://pdos.csail.mit.edu/6.828/2011/overview.html">JOS</a>, an
+instructional operating system developed at MIT. JOS provides skeleton code
+for a functioning operating system, and for each lab, we filled in the missing
+pieces. The core components of the labs were implementing virtual
+memory using x86's two
+level page tables, multiprogramming support with a simple scheduler, a file
+system, a network driver, and a minimal command line utility (a shell).
+
+I worked alone on the labs, with the exception of our final project, discussed
+below. I alo frequently extended JOS to provide interesting features not
+required for the labs. These extensions are discussed below.
+</p>
+<h5>Bootloader</h5>
+<p>
+To simplify development and debugging, we used QEMU to run our labs. Eventually,
+wrote a new bootloader to support newer SATA hard drives so that I could run
+JOS on my home desktop.
+</p>
+<h5>Unix style file system</h5>
+<p>
+I extended the file system we wrote for one of the labs to support the popular
+Unix style file system using inodes. With this improvement, my file system
+supported hard linking, multiple directories, and vastly increased file sizes.
+</p>
+<h5>TCC compiler</h5>
+<p>
+For my final project, I worked with a partner to port the
+<a href="http://bellard.org/tcc/">Tiny C Compiler</a> (TCC) to our run on our
+operating system. The majority of our effort was wrapping library calls
+in the TCC source code to equivalent functions in our JOS C library. In some
+cases, we had to write functions and APIs not provided by JOS. For example, we
+wrote our own <span class="monospace">malloc/free</span> since we did not write
+them for the JOS labs.
+</p>
+<p>
+We wrote associated utilities (e.g., a text editor to write code for
+TCC to compile) and were even able to compile TCC with itself running on JOS.
+Eventually, we were able to use TCC to compile the source code to JOS within
+JOS and install the compiled kernel to permanent store.
+</p>
+<h5>Graphical User Interface</h5>
+<p>
+After porting TCC, my partner and I wrote a graphical windowing system for JOS.
+My partner wrote a mini compiler to compile code written in a subset of the
+popular <a href="http://processing.org/">processing programming language</a>
+to executable binaries supporting a GUI API. We also wrote a mouse driver to
+interact with GUI applications (e.g., move windows around).
+</p>
+        </div>
+    </div>
+    <!-- end jos -->
+
+    <!-- begin bitwise section -->
+    <div class="well-container" id="bitwise">
+      <div class="well">
+        <h4>Determining Variable Bit Width</h4>
+<p>
+For my graduate compilers course, I worked with a partner to implement some of
+the functionality described in
+<a href="http://groups.csail.mit.edu/cag/bitwise/bitwise-pldi2k.pdf">Bitwidth
+  Analysis with Application to Silicon Compilation</a> by Stephenson et al.
+Specifically, we supported forward data
+propagation with a fixed point converging algorithm to handle cycles in the
+control flow graph (we did not handle backward data flow or use any pointer
+analyses). We worked in the LLVM framework to implement a simple iterative
+data flow analysis. Interestingly, we found that bit width analysis was able
+to propagate constants in all of our test programs, perhaps indicating that bit
+width analysis encompasses other analyses.
+</p>
+      </div>
+    </div>
+    <!-- end bitwise -->
+
+    <!-- begin pipeline section -->
+    <div class="well-container" id="pipeline">
+      <div class="well">
+        <h4>Pipelined Processor</h4>
+<p>
+For our final project in undergraduate computer architecture, my partner and I
+designed and implemented a five stage pipelined uniprocessor written in Verilog.
+The inspiration came from the conceptual simple LC3 processor developed by Yale
+Patt and Sanjay Patel. To design our pipelined processor, we wrote out a
+detailed data path diagrams of the unpipelined LC3 and filled in the logic to
+direct the processor the stage its operations. As extra credit, we implemented
+a simple two state saturated branch predictor as a global predictor and sixteen
+entry local predictor. We simulated our pipelined processor on various programs
+and found significant improvement of our unpredicted and predicted versions of
+the processor over the unpipelined processor, with the local predictor
+performing optimally.
+</p>
+      </div>
+    </div>
+
+  </div>
+  <!-- end projects -->
 
   <!-- Sidebar nav -->
-<div class="span4 ccnavbar">
-  <ul class="nav nav-list bs-docs-sidenav affix">
-    <li><a href="#detlinux">Deterministic Linux</a></li>
-    <li><a href="#ocw">OpenCoweb</a></li>
-  </ul>
-</div>
+  <div class="span4 ccnavbar">
+    <ul class="nav nav-list bs-docs-sidenav affix">
+      <li><a href="#detlinux">Deterministic Linux</a></li>
+      <li><a href="#ocw">OpenCoweb</a></li>
+      <li><a href="#jos">Jos Operating System</a></li>
+      <li><a href="#bitwise">Determining Variable Bit Width</a></li>
+      <li><a href="#pipeline">Pipelined Processor</a></li>
+    </ul>
+  </div>
 
 </div>
 
